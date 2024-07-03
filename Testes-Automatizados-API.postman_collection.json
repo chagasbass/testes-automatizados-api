@@ -1,0 +1,768 @@
+{
+	"info": {
+		"_postman_id": "6cc715bc-869f-4425-a859-bd43664d78ec",
+		"name": "Testes-Automatizados-API",
+		"description": "Coleção criada para testes automatizados",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "422321"
+	},
+	"item": [
+		{
+			"name": "Fluxo de Testes",
+			"item": [
+				{
+					"name": "usuarios-cadastro-erro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 400 quando senha não for informada ', () =>{\r",
+									"pm.response.to.have.status(400);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"console.log(retorno);\r",
+									"\r",
+									"pm.expect(retorno.password).to.not.null;\r",
+									"pm.expect(retorno.password).to.equal(\"password não pode ficar em branco\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Thiago Chagas\",\r\n    \"email\": \"teste@gmail.com\",\r\n    \"password\": \"\",\r\n    \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						},
+						"description": "Efetua o cadastro de um novo usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios-cadastro-sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 201 quando cadastro de usuário for efetuado com sucesso', () =>{\r",
+									"pm.response.to.have.status(201);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno._id).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Cadastro realizado com sucesso\");\r",
+									"\r",
+									"pm.collectionVariables.set(\"idUsuario\",retorno._id);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//script para geração de email e nome de usuário para cadastro de usuário\r",
+									"\r",
+									"const email = `chagas.${new Date().getTime()}@gmail.com`;\r",
+									"const nomeUsuario = `Thiago${new Date().getTime()}`;\r",
+									"\r",
+									"pm.collectionVariables.set('emailUsuario',email);\r",
+									"pm.collectionVariables.set('nomeUsuario',email);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"{{nomeUsuario}}\",\r\n    \"email\": \"{{emailUsuario}}\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						},
+						"description": "Efetua o cadastro de um novo usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios-listar-todos-sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 200 quando a busca de usuários retornar resultado', () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.quantidade).to.not.null;\r",
+									"pm.expect(retorno.usuarios).to.not.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "chagas.bass@gmail.com",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Busca um usuário pelo email informado"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios-listar-email-sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 200 quando a busca de usuários retornar resultado', () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.quantidade).to.not.null;\r",
+									"pm.expect(retorno.usuarios).to.not.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "{{emailUsuario}}",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Busca um usuário pelo email informado"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios-listar-todos-erro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 200 quando a listagem de usuários retornar vazia', () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.quantidade).to.equal(0);\r",
+									"pm.expect(retorno.usuarios).to.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/?email=chagas10.bass@gmail.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "chagas10.bass@gmail.com"
+								}
+							]
+						},
+						"description": "Busca um usuário pelo email informado"
+					},
+					"response": []
+				},
+				{
+					"name": "login-sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"console.log(retorno);\r",
+									"\r",
+									"var tokenAuth = retorno.authorization.split(\" \")[1];\r",
+									"\r",
+									"pm.collectionVariables.set('token',tokenAuth);\r",
+									"\r",
+									"const tokenExpirado = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYWdhcy4xNzE5OTUwNTU1NTI4QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoidGVzdGUiLCJpYXQiOjE3MTk5NTExMzUsImV4cCI6MTcxOTk1MTczNX0.0gLvPap7X_eJXUhY5Hz6MOIwB_HMzlKh0x0H5w6VSkU\";\r",
+									"\r",
+									"pm.collectionVariables.set('token-expirado',tokenExpirado);\r",
+									"\r",
+									"pm.test('Deve retornar status code 200 quando login for efetuado com sucesso', () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Login realizado com sucesso\");\r",
+									"pm.expect(retorno.authorization).to.not.null;\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{emailUsuario}}\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-erro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 401 quando login não for efetuado com sucesso', () =>{\r",
+									"pm.response.to.have.status(401);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Email e/ou senha inválidos\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"chagas.bass@gmail.co\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "produtos-cadastro-erro-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 401 quando o token está expirado', () =>{\r",
+									"pm.response.to.have.status(401);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Token de acesso ausente, inválido, expirado ou usuário do token não existe mais\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenExpirado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Controle DualShock PS5\",\r\n  \"preco\": 299,\r\n  \"descricao\": \"Controle de videoGame playstation 5\",\r\n  \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "produtos-cadastro-erro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 400 quando o cadastro de um produto não for efetuado', () =>{\r",
+									"pm.response.to.have.status(400);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Já existe produto com esse nome\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Controle DualShock PS5\",\r\n  \"preco\": 299,\r\n  \"descricao\": \"Controle de videoGame playstation 5\",\r\n  \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "produtos-cadastro-sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 201 quando o cadastro de um produto for sucesso', () =>{\r",
+									"pm.response.to.have.status(201);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Cadastro realizado com sucesso\");\r",
+									"pm.expect(retorno._id).to.not.null;\r",
+									"\r",
+									"pm.collectionVariables.set(\"idProduto\",retorno._id);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//script para geração de nome do produto para cadastro de usuário\r",
+									"\r",
+									"const novoProduto = `produto.${new Date().getTime()}`;\r",
+									"const descricaoProduto = `Descrição do produto:` + novoProduto;\r",
+									"pm.collectionVariables.set('novoProduto',novoProduto);\r",
+									"pm.collectionVariables.set('descricaoProduto',descricaoProduto);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{novoProduto}}\",\r\n  \"preco\": 299,\r\n  \"descricao\": \"{{descricaoProduto}}\",\r\n  \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "produtos-listagem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/produtos?nome=controle ps5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "controle ps5"
+								}
+							]
+						},
+						"description": "Efetua uma busca de um determinado produto"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios-exclusao-erro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 200 quando houver erro na exclusão de usuário', () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Nenhum registro excluído\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/w7VE8Y6WlkRLTCHtzz",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"w7VE8Y6WlkRLTCHtzz"
+							]
+						},
+						"description": "Exclui um usuário pelo indentificador"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios-exclusao-sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Deve retornar status code 200 quando não houver erro na exclusão de usuário', () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"const retorno = pm.response.json();\r",
+									"\r",
+									"pm.expect(retorno.message).to.not.null;\r",
+									"pm.expect(retorno.message).to.equal(\"Registro excluído com sucesso\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/{{idUsuario}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"{{idUsuario}}"
+							]
+						},
+						"description": "Exclui um usuário pelo indentificador"
+					},
+					"response": []
+				}
+			],
+			"description": "Fluxo de testes automatizados criados para testar as rotinas da api\n\nO fluxo é executado na seguinte ordem:\n\n1. **Erro** ao cadastrar usuário\n    \n2. **Sucesso** ao cadastrar usuário\n    \n3. **Sucesso** ao listar usuários\n    \n4. **Sucesso** ao listar usuário por email\n    \n5. **Erro** ao listar usuário\n    \n6. **Sucesso** ao efetuar o login\n    \n7. **Erro** ao efetuar o login\n    \n8. **Erro** de token ao cadastrar um produto\n    \n9. **Erro** ao cadastrar um produto\n    \n10. **Sucesso** ao cadastrar um produto\n    \n11. **Sucesso** ao listar um produto\n    \n12. **Erro** na exclusão de um usuário\n    \n13. **Sucesso** na exclusão de um usuário"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://serverest.dev",
+			"type": "string"
+		},
+		{
+			"key": "emailUsuario",
+			"value": ""
+		},
+		{
+			"key": "nomeUsuario",
+			"value": ""
+		},
+		{
+			"key": "idUsuario",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "novoProduto",
+			"value": ""
+		},
+		{
+			"key": "descricaoProduto",
+			"value": ""
+		},
+		{
+			"key": "idProduto",
+			"value": ""
+		},
+		{
+			"key": "token-expirado",
+			"value": ""
+		}
+	]
+}
