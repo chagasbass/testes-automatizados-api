@@ -46,6 +46,22 @@ pm.collectionVariables.set('emailUsuario', email);
 pm.collectionVariables.set('nomeUsuario', nomeUsuario);
 ```
 
+* Exemplo de teste criando no postman na aba "Post-res" 
+
+```javascript
+pm.test('Deve retornar status code 201 quando cadastro de usuário for efetuado com sucesso', () =>{
+pm.response.to.have.status(201);
+const retorno = pm.response.json();
+
+pm.expect(retorno.message).to.not.null;
+pm.expect(retorno._id).to.not.null;
+pm.expect(retorno.message).to.equal("Cadastro realizado com sucesso");
+
+pm.collectionVariables.set("idUsuario",retorno._id);
+
+});
+```
+
 
 Após efetuar a criação dos testes de acordo com o plano de testes,
 deve-se exportar a collection criada.
