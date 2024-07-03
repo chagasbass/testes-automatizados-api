@@ -7,7 +7,6 @@ Este documento detalha o processo de criação de testes automatizados para uma 
 **Pré-requisitos**
 
 * Ferramenta Postman instalada: [https://www.postman.com/downloads/](https://www.postman.com/downloads/)
-* Repositório do projeto: [https://github.com/topics/api-automation-testing](https://github.com/topics/api-automation-testing)
 * Node.js instalado: [https://nodejs.org/en/download/package-manager](https://nodejs.org/en/download/package-manager)
 * Pacote newman-reporter-htmlextra instalado globalmente: `npm install -g newman-reporter-htmlextra`
 
